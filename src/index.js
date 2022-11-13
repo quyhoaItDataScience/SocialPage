@@ -16,6 +16,7 @@ import Hompage from "./screens/Homepage";
 import UserProvider from "./context/UserContext";
 import Signup from "./screens/Signup";
 import Signin from "./screens/Signin";
+import SignUpPage from "./screens/SignUpPage";
 
 // const router = createBrowserRouter([
 //   {
@@ -33,7 +34,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<MainLayout />}>
       <Route index element={<Hompage />} />
       <Route path="profile" element={<Profile />} />
-      <Route path="signup" element={<Signup />} />
+      <Route path="signup" element={<SignUpPage />} />
       <Route path="signin" element={<Signin />} />
     </Route>
   )
