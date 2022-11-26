@@ -14,6 +14,7 @@ import HomePage from "./pages/Homepage";
 import UserDetailPage from "./pages/UserDetailPage";
 import YourEvents from "./pages/YourEvents";
 import ProfileDetail from "./pages/ProfileDetail";
+import JoinedEventsPage from "./pages/JoinedEventsPage";
 
 // const router = createBrowserRouter([
 //   {
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
       {/* <Route path="signup" element={<SignUpPage />} />
       <Route path="signin" element={<Signin />} /> */}
       <Route path="profile-detail" element={<ProfileDetail />} />
+      <Route path="joined-events" element={<JoinedEventsPage />} />
       <Route path="your-events" element={<YourEvents />} />
       <Route path="userDetails" element={<UserDetailPage />} />
     </Route>

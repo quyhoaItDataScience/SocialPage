@@ -15,6 +15,7 @@ import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const pages = ["Home", "Your Events", "Joined Events"];
+const navList = ["/", "/your-events", "/joined-events"];
 
 export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(true);
@@ -52,13 +53,13 @@ export default function MenuAppBar() {
             <Link to="/">PVC</Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {pages.map((page, idx) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                <Link to={`${navList[idx]}`}>{page}</Link>
               </Button>
             ))}
           </Box>
@@ -89,7 +90,6 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleClose}>Your events</MenuItem>
               </Menu>
