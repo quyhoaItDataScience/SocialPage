@@ -1,39 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../components/Input";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { getHobbies, signup } from "../api/user";
-import { useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import { signupUser } from "../api/user";
+import { NavLink } from "react-router-dom";
 
-const defaultHobbies = ["Badminton", "Football", "Running"];
+// const schema = yup.object({
+//   name: yup.string().required("Please enter your fullname"),
+//   email: yup
+//     .string()
+//     .email("Your email is not valid!")
+//     .required("Please enter your email address"),
+//   password: yup
+//     .string()
+//     .min(8, "Password must be at least 8 characters")
+//     .required("Please enter your password"),
+// });
 
 const SignUpPage = () => {
-  const [cityOptions, setCityOptions] = useState([]);
-  const [hobbies, setHobbies] = useState(defaultHobbies);
   const navigate = useNavigate();
+
   const {
     control,
-    register,
     handleSubmit,
-    formState: { isValid, isSubmitting, errors },
+    formState: { errors },
   } = useForm({
     mode: "onChange",
   });
 
-  const { setUser } = useUserContext();
   const handleSignUp = async (value) => {
-    try {
-      toast.success("You are now a member!");
-      const data = await signup(value);
-      console.log("backend", data);
+    value.greenPoint = 0;
+    value.listEvent = [];
+    console.log("frontend", value);
+
+    if (value.password !== value.confirm) {
+      toast.error("Confirm password incorrect. Please enter again.");
       return;
-      setUser(data);
-      navigate("/");
-    } catch (error) {
-      console.log(error.response);
+    } else {
+      const key = `confirm`;
+      delete value[key];
+      try {
+        const data = await signupUser(value);
+        console.log("backend", data);
+        // navigate("/");
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -45,37 +61,17 @@ const SignUpPage = () => {
     }
   }, [errors]);
 
-  useEffect(() => {
-    // const fetchLocation = async () => {
-    //   try {
-    //     const result = await axios.get(location);
-    //     setCityOptions(result.data);
-    //   } catch (error) {}
-    // };
-    // fetchLocation();
-  }, []);
-
-  useEffect(() => {
-    const fetchHobby = async () => {
-      try {
-        const data = await getHobbies();
-        setHobbies(data);
-      } catch (error) {}
-    };
-    fetchHobby();
-  }, []);
-
   return (
-    <div className="flex justify-center items-center ">
+    <div className="mt-2 mx-auto max-w-[500px]">
       <form
         onSubmit={handleSubmit(handleSignUp)}
-        className="p-5 border-2 border-orange-400 rounded-md"
+        className="p-5 border-2 border-orange-400 rounded-md w-[500px]"
       >
         <h2 className="mb-10 text-2xl font-semibold text-center">Sign Up</h2>
-        <div className="flex gap-x-3">
-          <div className="flex flex-col font-semibold gap-y-3">
-            <label htmlFor="fullname" className="flex items-center gap-x-2">
-              Fullname
+        <div className="md:flex justify-center gap-3">
+          <div className="flex flex-col font-semibold gap-3">
+            <label htmlFor="name" className="flex items-center gap-x-2">
+              Name
               <span className="text-red-500">*</span>
             </label>
             <Input
@@ -85,7 +81,7 @@ const SignUpPage = () => {
               placeholder="Enter your name"
             ></Input>
           </div>
-          <div className="flex flex-col font-semibold gap-y-3">
+          <div className="flex flex-col font-semibold gap-3">
             <label htmlFor="email" className="flex items-center gap-x-2">
               Email
               <span className="text-red-500">*</span>
@@ -98,24 +94,8 @@ const SignUpPage = () => {
             ></Input>
           </div>
         </div>
-        <div className="flex gap-x-3">
-          <div className="flex flex-col font-semibold gap-y-3">
-            <label htmlFor="hobbies" className="font-semibold ">
-              Your hobby
-            </label>
-            <select
-              {...register("hobby")}
-              className="p-3 mb-6 border-2 border-orange-400 rounded-md w-[300px]"
-              onChange={(e) => console.log(e.target.value)}
-            >
-              {hobbies?.map((hobby) => (
-                <option key={hobby.id} value={hobby.id}>
-                  {hobby.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col font-semibold gap-y-3">
+        <div className="md:flex justify-center gap-x-3">
+          <div className="flex flex-col font-semibold gap-3">
             <label htmlFor="password" className="flex items-center gap-x-2">
               Password
               <span className="text-red-500">*</span>
@@ -127,40 +107,65 @@ const SignUpPage = () => {
               placeholder="Enter your password"
             ></Input>
           </div>
-        </div>
-        <div className="flex gap-x-3">
-          <div className="flex flex-col font-semibold gap-y-3">
-            <label htmlFor="phone">Phone Number</label>
+          <div className="flex flex-col font-semibold gap-3">
+            <label htmlFor="confirm" className="flex items-center gap-x-2">
+              Confirm password
+              <span className="text-red-500">*</span>
+            </label>
             <Input
               control={control}
-              name="phone"
-              type="text"
-              placeholder="Enter your phone number"
+              name="confirm"
+              type="password"
+              placeholder="Confirm your password"
             ></Input>
           </div>
-          <div className="flex flex-col font-semibold gap-y-3">
-            <label htmlFor="location">Location</label>
-            <select
-              {...register("location")}
-              className="p-3 mb-6 border-2 border-orange-400 rounded-md w-[300px]"
-            >
-              {cityOptions &&
-                cityOptions.map((city) => (
-                  <option key={city.id} value={city.id}>
-                    {city.name}
-                  </option>
-                ))}
-            </select>
+        </div>
+        <div className="md:flex justify-center gap-x-3">
+          <div className="flex flex-col font-semibold gap-3">
+            <label htmlFor="company">Your company</label>
+            <Input
+              control={control}
+              name="company"
+              type="text"
+              placeholder="Enter your company"
+            ></Input>
+          </div>
+          <div className="flex flex-col font-semibold gap-3">
+            <label htmlFor="studentCode">
+              MSSV <span className="text-red-500">*</span>
+            </label>
+            <Input
+              control={control}
+              name="studentCode"
+              type="text"
+              placeholder="Enter your MSSV"
+            ></Input>
           </div>
         </div>
+        <div className="flex justify-center w-full flex-col font-semibold gap-y-3">
+          <label htmlFor="location">
+            Your location here <span className="text-red-500">*</span>
+          </label>
+          <Input
+            control={control}
+            name="location"
+            type="text"
+            placeholder="Enter your location"
+          ></Input>
+        </div>
         <button
-          className="w-full p-2 mt-10 text-white bg-orange-300 rounded-md hover:bg-orange-400
-          transition
-          "
+          className="w-full p-3 mt-5 text-white bg-orange-300 rounded-md
+          hover:bg-orange-500 transition"
           type="submit"
         >
           Submit
         </button>
+        <div className="flex gap-x-3 my-5">
+          <p>Already a member?</p>
+          <NavLink to="/signin" className="">
+            Signin
+          </NavLink>
+        </div>
       </form>
     </div>
   );

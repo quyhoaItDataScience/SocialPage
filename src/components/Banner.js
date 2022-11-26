@@ -1,5 +1,5 @@
 import { Typography, Paper, Box, Grid } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 const url =
   "https://cdn.dribbble.com/userupload/4025538/file/original-a80f539bc1af0021d43230c38a67d759.png?compress=1&resize=400x300&vertical=top";
@@ -29,6 +29,7 @@ function Banner({ urlImage }) {
           right: 0,
           left: 0,
           backgroundColor: "rgba(0,0,0,.3)",
+          borderRadius: "1em",
         }}
       />
       <Grid container>
@@ -47,12 +48,11 @@ function Banner({ urlImage }) {
               color="inherit"
               gutterBottom
             >
-              Title of a longer featured blog post
+              Nơi gắn kết của những tình nguyện viên
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
-              Multiple lines of text that form the lede, informing new readers
-              quickly and efficiently about what's most interesting in this
-              post's contents.
+              Việc tham gia các hoạt động thường xuyên sẽ giúp các bạn nhận được
+              cây xanh thông qua việc tích luỹ green point
             </Typography>
           </Box>
         </Grid>

@@ -5,21 +5,28 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { Button } from "@mui/material";
+import { Button, Icon } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import logoImg from "../assets/logo.png";
 
 const pages = ["Home", "Your Events", "Joined Events"];
 const navList = ["/", "/your-events", "/joined-events"];
 
 export default function MenuAppBar() {
+  const { pathname } = useLocation();
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  React.useEffect(() => {
+    if (pathname === "/signin" || pathname === "/signup") {
+      return;
+    }
+  }, [pathname]);
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -39,20 +46,25 @@ export default function MenuAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
-
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/">PVC</Link>
+          <Typography variant="h6" component="div">
+            <Link to="/">
+              <img
+                style={{
+                  width: "80",
+                  height: "80px",
+                }}
+                src={logoImg}
+                alt="logo-img"
+              />
+            </Link>
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              marginLeft: "20px",
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+            }}
+          >
             {pages.map((page, idx) => (
               <Button
                 key={page}
@@ -90,8 +102,17 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Your events</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link to="/user-detail">My profile</Link>
+                </MenuItem>
+
+                <MenuItem onClick={handleClose}>
+                  <Link to={`/create-event/userId`}>Viết bài</Link>
+                </MenuItem>
+
+                <MenuItem onClick={handleClose}>
+                  <Link to="/signup">Đăng xuất</Link>
+                </MenuItem>
               </Menu>
             </div>
           )}

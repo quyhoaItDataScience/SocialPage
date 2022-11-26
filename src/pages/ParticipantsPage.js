@@ -9,9 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
-import { Link, useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,25 +43,20 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function JoinedEventsPage() {
-  const [isApproved, setIsApproved] = React.useState(false);
-  const [isChecked, setIsChecked] = React.useState(false);
-
-  const navigate = useNavigate();
-
+export default function ParticipantsPage() {
   return (
     <Container sx={{ marginTop: "40px" }}>
       <Typography variant="h4" textAlign="center">
-        Các sự kiện của bạn đã đăng ký
+        Tất cả các ứng viên tham gia sự kiện {`name`}
       </Typography>
       <TableContainer component={Paper} sx={{ margin: "40px 0" }}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Tên sự kiện</StyledTableCell>
+              <StyledTableCell>Tên ứng viên</StyledTableCell>
+              <StyledTableCell align="right">Email</StyledTableCell>
               <StyledTableCell align="right">Địa điểm</StyledTableCell>
-              <StyledTableCell align="right">Xem thêm</StyledTableCell>
-              <StyledTableCell align="right">Trạng thái</StyledTableCell>
+              <StyledTableCell align="right">Phê duyệt</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -72,29 +65,19 @@ export default function JoinedEventsPage() {
                 <StyledTableCell component="th" scope="row">
                   quyhoa
                 </StyledTableCell>
-                <StyledTableCell align="right">Ho Chi Minh</StyledTableCell>
                 <StyledTableCell align="right">
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => {
-                      navigate("/event-detail/1");
-                    }}
-                  >
-                    Chi tiết
-                  </Button>
+                  quyhoa@gmail.com
                 </StyledTableCell>
-                <StyledTableCell align="right" sx={{}}>
-                  {isApproved ? (
-                    <CheckCircleIcon color="#fff" />
-                  ) : isChecked ? (
-                    <HighlightOffIcon
-                      color="red"
-                      sx={{ color: "red !important" }}
-                    />
-                  ) : (
-                    <AutorenewOutlinedIcon />
-                  )}
+                <StyledTableCell align="right">Ho Chi Minh</StyledTableCell>
+                <StyledTableCell align="right" sx={{ padding: 0 }}>
+                  <Stack direction="row" spacing={2} sx={{ display: "block" }}>
+                    <Button size="small">
+                      <CheckCircleIcon color="#fff" />
+                    </Button>
+                    <Button size="small">
+                      <DeleteIcon color="#fff" />
+                    </Button>
+                  </Stack>
                 </StyledTableCell>
               </StyledTableRow>
             ))}

@@ -4,8 +4,10 @@ import React from "react";
 
 const YourEvents = () => {
   return (
-    <Container>
-      <Typography>Your events</Typography>
+    <Container sx={{ marginTop: "40px" }}>
+      <Typography variant="h4" textAlign="center" marginBottom="40px">
+        Các sự kiện của bạn
+      </Typography>
       <Grid container spacing={3}>
         <Grid item>
           <CardEvent />

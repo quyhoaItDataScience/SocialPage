@@ -1,14 +1,28 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = "http://localhost:8080/";
 
-const getUserUrl = "?mod=user&action=getUserList";
-const location = "?mod=location&action=getLocationList";
-const hobbyUrl = "?mod=hobby&action=getHobbyList";
+const getListUserUrl = "user";
+const getUserByIdUrl = (id) => {
+  return `/user/${id}`;
+};
+const signUpUrl = "user";
+const signinUrl = (email, password) =>
+  `signin?email=${email}&password=${password}`;
+const updateUserByIdUrl = (id) => `/user/${id}`; // Tất cả trường
+const getListEventUrl = "event";
+const getEventByIdUrl = (id) => {
+  return `/event/${id}`;
+};
+const createEventUrl = "event";
+const updateEventUrl = "event";
+const deleteEventByIdUrl = (id) => {
+  return `/event/${id}`;
+};
 
 export const getUsers = async () => {
   try {
-    const { data } = await axios.get(getUserUrl);
+    const { data } = await axios.get(getListUserUrl);
     console.log(data);
     return data;
   } catch (err) {
@@ -16,40 +30,84 @@ export const getUsers = async () => {
   }
 };
 
-export const getUsersWithSameHobbies = async (userInfo) => {
+export const getUserById = async (userId) => {
   try {
-    const { data } = await axios.get(
-      `?mod=user&action=getNearByUser&location_id=${userInfo.location_id}&hobby_id=${userInfo.hobby_id}`
-    );
+    const { data } = await axios.get(getUserByIdUrl(userId));
+    console.log(data);
     return data;
   } catch (err) {
     console.log(err);
   }
 };
 
-export const signup = async (user) => {
+export const signinUser = async (email, password) => {
   try {
-    // const data = await fetch(
-    //   "http://localhost/codebase/test_data/api/user.php",
-    //   {
-    //     method: "POST",
-    //     mode: "cors",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(user),
-    //   }
-    // );
-    const { data } = await axios.post("/user", user);
-
+    const { data } = await axios.get(signinUrl(email, password));
     console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const signupUser = async (user) => {
+  try {
+    const { data } = await axios.post(signUpUrl, user);
+
+    console.log("backend", data);
     return data;
   } catch (err) {}
 };
 
-export const getHobbies = async () => {
+export const updateUserById = async (userId, user) => {
   try {
-    const { data } = await axios.get(hobbyUrl);
+    const { data } = await axios.post(updateUserByIdUrl(userId), user);
+
+    console.log("backend", data);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getListEvent = async () => {
+  try {
+    const { data } = await axios.get(getListEventUrl);
+
+    console.log("backend", data);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getEventById = async (eventId) => {
+  try {
+    const { data } = await axios.get(getEventByIdUrl(eventId));
+
+    console.log("backend", data);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const createEvent = async (event) => {
+  try {
+    const { data } = await axios.post(createEventUrl, event);
+
+    console.log("backend", data);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteEvent = async (eventId) => {
+  try {
+    const { data } = await axios.delete(deleteEventByIdUrl(eventId));
+    console.log("deleted");
+
     return data;
   } catch (err) {
     console.log(err);

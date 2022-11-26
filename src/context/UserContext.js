@@ -3,12 +3,12 @@ import React, { useContext, useState } from "react";
 const UserContext = React.createContext();
 
 const userDefault = {
-  username: "",
+  id: "",
+  name: "",
   email: "",
-  fullname: "",
-  phone: "",
-  hobby_id: "",
-  location_id: "",
+  location: "",
+  company: "",
+  studentCode: "",
 };
 
 function UserProvider({ children }) {
