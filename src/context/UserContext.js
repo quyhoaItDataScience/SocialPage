@@ -14,16 +14,16 @@ const userDefault = {
 function UserProvider({ children }) {
   const [user, setUser] = useState(userDefault);
 
-  const value = {
-    user,
-    setUser,
-  };
-
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
 }
 
 export const useUserContext = () => {
-  return useContext(UserContext);
+  const context = useContext(UserContext);
+  return context;
 };
 
 export default UserProvider;
